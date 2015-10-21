@@ -16,6 +16,7 @@ instance Yesod Pagina
 
 mkYesod "Pagina" [parseRoutes|
     / HomeR GET
+    /cadastro CadastroR GET
     /contato ContatoR GET
 |]
 
@@ -24,39 +25,7 @@ widgetHtmlHome :: Widget
 widgetHtmlHome = [whamlet|
 <div class="fixed-top">  
      <!-- header -->
-     <header data-type="parallax" data-speed="4" class="cover" style="background-image: url(img/cover.jpg);">
-             <div class="header-color">
-                  <div class="header">
-                       <div class="container">
-                            <span class="bar hide">
-                            <a href="@{HomeR}" class="logo pull-left"><i class="ion-flash"></i> GAMEFOREST    
-                            <div class="advertisement advertisement-sm pull-left">
-                                 <a href="@{HomeR}"><img src="img/468.png" alt="" />
-                  <!-- navigation -->
-                  <nav>
-                       <div class="container">
-                            <ul>
-                                <li><a href="index.html">Home
-                                <li class="dropdown mega-dropdown">
-                                    <a href="games.html">Games <i class="ion-arrow-down-b"></i>          
-                                    <!-- mega menu -->
-                                    <ul class="dropdown-menu mega-dropdown-menu row">     
-                                        <li class="col-sm-3">
-                                            <ul>
-                                                <li class="dropdown-header">Categories
-                                                <li><a href="#"><i class="ion-ios-monitor-outline font-size-14"></i> All Platform
-                                                <li><a href="#"><i class="ion-playstation font-size-14"></i> Playstation 4
-                                                <li><a href="#"><i class="ion-xbox font-size-14"></i> Xbox One
-                                                <li><a href="#"><i class="ion-mouse font-size-14"></i> Computer
-                                        <li><a href="videos.html">Cadastro
-                                        <li><a href="#signin" data-toggle="modal" class="btn"><i class="ion-log-in"></i> Login
-                                        <li><a href="@{ContatoR}">Contato
-                                    <!-- search -->
-                                    <div id="search" class="pull-right hidden-sm">
-                                         <form method="post" class="form-inline">
-                                               <input type="text" class="form-control" placeholder="Search..." />
-                  <!-- /.navigation -->
-             <!-- /.header-color -->
+     ^{menu}
      <!-- /.header -->
      <div class="container">
           <!-- wrapper-->
@@ -103,9 +72,9 @@ widgetHtmlHome = [whamlet|
                <!-- section -->
                <section class="bg-grey-100 border-top-1 border-bottom-1 border-grey-200 margin-bottom-10 margin-top-5 relative no-padding hidden-xs">
                         <div class="section-title no-margin-top no-border padding-top-25 padding-left-25 padding-right-25"> 
-                             <h3 class="display-inline-block pull-left bg-grey-900 color-white no-border">Latest Games
+                             <h3 class="display-inline-block pull-left bg-grey-900 color-white no-border">Últimos jogos
                                  <ul class="list-inline pull-left title-categories hidden-sm-lg">
-                                     <li><a href="#" class="active">All
+                                     <li><a href="#" class="active">Todos
                                      <li><a href="#">PC
                                      <li><a href="#">PS3
                                      <li><a href="#">PS4
@@ -161,7 +130,7 @@ widgetHtmlHome = [whamlet|
                                                   <span class="star rated">
                                                   <span class="star rated">
                                                   <span class="star rated">
-                                                  <span class="star rated">        
+                                                  <span class="star rated">
                                   <div class="thumbnail">
                                        <h4 class="padding-10-20">
                                            <a href="#">Injustice Gods Among Us
@@ -175,7 +144,7 @@ widgetHtmlHome = [whamlet|
                                                   <span class="star rated">
                                                   <span class="star rated">
                                                   <span class="star rated">
-                                                  <span class="star rated">  
+                                                  <span class="star rated">
                                   <div class="thumbnail">
                                        <h4 class="padding-10-20">
                                            <a href="#">Metal Gear Solid V
@@ -190,41 +159,71 @@ widgetHtmlHome = [whamlet|
                                                   <span class="star rated">
                                                   <span class="star rated">
                                                   <span class="star rated"> 
-               <!-- section -->   
+               <!-- section -->
           <!-- /.wrapper -->
      <!-- footer -->
-     <footer>
-             <div class="container">
-                  <div class="widget row">
-                       <!-- about -->
-                       <div class="col-md-4 col-xs-12 no-padding-sm-lg">
-                            <h4 class="title">About GameForest
-                            <div class="text">
-                                 <span>GameForest is a perfect theme for gaming, news and entertainment websites. Built on latest Twitter Bootstrap. Template is available in 4 colors.
-                       <!-- categories -->
-                       <div class="col-md-2 col-xs-12 visible-md-block visible-lg-block no-padding-sm-lg">
-                            <h4 class="title">Categories
-                            <ul class="nav">
-                                <li><a href="#"><i class="fa fa-chevron-right"></i> Playstation 4
-                                <li><a href="#"><i class="fa fa-chevron-right"></i> XBOX ONE
-                                <li><a href="#"><i class="fa fa-chevron-right"></i> PC
-                                <li><a href="#"><i class="fa fa-chevron-right"></i> PS3
-                       <!-- social buttons -->
-                       <div class="col-md-3 col-xs-12 no-padding-sm-lg">
-                            <h4 class="title">Follow Us
-                            <ul class="list-inline">
-                                <li><a href="#" class="btn btn-circle btn-social-icon btn-twitter" data-toggle="tooltip" title="Follow us on Twitter"><i class="fa fa-twitter"></i>
-                                <li><a href="#" class="btn btn-circle btn-social-icon btn-facebook" data-toggle="tooltip" title="Follow us on Facebook"><i class="fa fa-facebook"></i>
-                                <li><a href="#" class="btn btn-circle btn-social-icon btn-google-plus" data-toggle="tooltip" title="Follow us on Google"><i class="fa fa-google-plus"></i>
-                 <!-- /.footer widget -->
-             <!-- footer bottom -->
-             <div class="footer-bottom">
-                  <div class="container">
-                       <ul class="pull-left">
-                           <li>&copy; 2014 GAMEFOREST. All rights reserved.
-             <!-- /.footer bottom -->
+     ^{footer}
      <!-- /.footer -->
      <!-- sign-in modal -->
+|]
+
+widgetHtmlContato :: Widget
+widgetHtmlContato = [whamlet|
+<div class="fixed-top"> 
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+     <div class="container">
+          <!-- wrapper-->
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <h4 class="page-header no-margin-top">Contato
+                             <form autocomplete="off" method="POST">
+                                   <div class="col-md-12 col-xs-12 no-padding">
+                                        <div class="row">
+                                             <div class="control-group col-md-6 ">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="Name" placeholder="Nome" required>
+                                             <div class="control-group col-md-6">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
+                                             <div class="control-group col-md-12 no-padding col-xs-12 margin-top-15">
+                                                  <div class="controls">
+                                                        <textarea class="form-control input-lg" rows="4" placeholder="Messagem">
+          <!-- /.wrapper -->
+          ^{footer}
+
+|]
+
+widgetHtmlCadastro :: Widget
+widgetHtmlCadastro = [whamlet|
+<div class="fixed-top"> 
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+     <div class="container">
+          <!-- wrapper-->
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <h4 class="page-header no-margin-top">Cadastro
+                             <form autocomplete="off" method="POST">
+                                   <div class="col-md-12 col-xs-12 no-padding">
+                                        <div class="row">
+                                             <div class="control-group col-md-6 ">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="Name" placeholder="Nome" required>
+                                             <div class="control-group col-md-6">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
+                                             <div class="control-group col-md-12 no-padding margin-top-15">
+                                                  <div class="controls">
+                                                        <input type="text" class="form-control input-lg" id="senha" placeholder="Senha" required>
+          <!-- /.wrapper -->
+          <!-- footer -->
+          ^{footer}
+          <!-- /.footer -->
 |]
 
 widgetCss :: Widget
@@ -256,16 +255,15 @@ widgetJS = do
     !function(e){"use strict";e(".main-carousel").on("slide.bs.carousel",function(){e(".carousel-caption h1 span").removeClass("animated fadeInLeft"),e(".carousel-caption h2 span").removeClass("animated fadeInRight"),e(".carousel-caption p").removeClass("animated fadeInLeft")}),e(".main-carousel").on("slid.bs.carousel",function(){e(this).find(".item.active .carousel-caption h1 span").addClass("animated fadeInLeft"),e(this).find(".item.active .carousel-caption h2 span").addClass("animated fadeInRight"),e(this).find(".item.active .carousel-caption p").addClass("animated fadeInLeft")}),e(".masonry").imagesLoaded(function(){e(".masonry").masonry({itemSelector:".elem",gutter:27})}),e(".loaded-content section").slice(0,4).show(),e("#load-more").click(function(t){t.preventDefault();var i=e(this);i.button("loading"),setTimeout(function(){i.button("reset"),e(".loaded-content section:hidden").slice(0,4).fadeIn()},500)});var t=e(".owl-carousel");t.owlCarousel({items:4,itemsDesktop:[1e3,3],itemsTablet:[600,1],itemsMobile:!1}),e(".next").click(function(){return t.trigger("owl.next"),!1}),e(".prev").click(function(){return t.trigger("owl.prev"),!1}),e(".play").click(function(){return t.trigger("owl.play",1e3),!1}),e(".stop").click(function(){return t.trigger("owl.stop"),!1});var i=e(".owl-video-carousel");i.owlCarousel({items:4,itemsDesktop:[1e3,3],itemsTablet:[600,1],itemsMobile:!1}),e(".video-next").click(function(){return i.trigger("owl.next"),!1}),e(".video-prev").click(function(){return i.trigger("owl.prev"),!1}),e(".owl-widget-carousel").owlCarousel({autoPlay:!0,singleItem:!0})}(jQuery);
 |]
 
-widgetHtmlContato :: Widget
-widgetHtmlContato = [whamlet|
-<div class="fixed-top"> 
-     <!-- header -->
-     <header data-type="parallax" data-speed="4" class="cover" style="background-image: url(img/cover.jpg);">
+
+menu :: Widget
+menu = toWidget [whamlet|
+<header data-type="parallax" data-speed="4" class="cover" style="background-image: url(img/cover.jpg);">
              <div class="header-color">
                   <div class="header">
                        <div class="container">
                             <span class="bar hide">
-                            <a href="@{HomeR}" class="logo pull-left"><i class="ion-flash"></i> GAMEFOREST    
+                            <a href="@{HomeR}" class="logo pull-left"><i class="ion-flash"></i> YOUPLAY 
                             <div class="advertisement advertisement-sm pull-left">
                                  <a href="@{HomeR}">
                                     <img src="img/468.png" alt="" />
@@ -275,36 +273,48 @@ widgetHtmlContato = [whamlet|
                             <ul>
                                 <li><a href="index.html">Home
                                 <li class="dropdown mega-dropdown">
-                                    <a href="games.html">Games <i class="ion-arrow-down-b"></i>          
+                                    <a href="games.html">Jogos <i class="ion-arrow-down-b"></i>
                                     <!-- mega menu -->
                                     <ul class="dropdown-menu mega-dropdown-menu row">     
                                         <li class="col-sm-3">
                                             <ul>
                                                 <li class="dropdown-header">Categorias
-                                                <li><a href="#"><i class="ion-ios-monitor-outline font-size-14"></i> All Platform
+                                                <li><a href="#"><i class="ion-ios-monitor-outline font-size-14"></i>Todas as plataformas
                                                 <li><a href="#"><i class="ion-playstation font-size-14"></i> Playstation 4
                                                 <li><a href="#"><i class="ion-xbox font-size-14"></i> Xbox One
-                                                <li><a href="#"><i class="ion-mouse font-size-14"></i> Computer
-                                        <li><a href="videos.html">Cadastro
-                                        <li><a href="gallery.html">Login
+                                                <li><a href="#"><i class="ion-mouse font-size-14"></i> Computador
+                                        <li><a href="@{CadastroR}">Cadastro
+                                        <li><a href="#signin" data-toggle="modal" class="btn"><i class="ion-log-in"></i> Login
                                         <li><a href="@{ContatoR}">Contato
                                     <!-- search -->
                                     <div id="search" class="pull-right hidden-sm">
                                          <form method="post" class="form-inline">
-                                               <input type="text" class="form-control" placeholder="Search..." />
+                                               <input type="text" class="form-control" placeholder="Buscar" />
                   <!-- /.navigation -->
              <!-- /.header-color -->
-     <!-- /.header -->
-     
+|]
 
+footer :: Widget
+footer = toWidget [whamlet|
+          <!-- footer -->
+          <footer>
+             <!-- footer bottom -->
+             <div class="footer-bottom">
+                  <div class="container">
+                       <ul class="pull-left">
+                           <li>&copy; 2015 YOUPLAY. Todos os direitos reservados.
+             <!-- /.footer bottom -->
+          <!-- /.footer -->
 |]
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout (widgetHtmlHome >> widgetCss >> widgetJS)
 
+getCadastroR :: Handler Html
+getCadastroR = defaultLayout (widgetHtmlCadastro >> widgetCss >> widgetJS)
+
 getContatoR :: Handler Html
 getContatoR = defaultLayout (widgetHtmlContato >> widgetCss >> widgetJS)
-
 
 
 main :: IO ()
