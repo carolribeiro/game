@@ -17,159 +17,18 @@ instance Yesod Pagina
 mkYesod "Pagina" [parseRoutes|
     / HomeR GET
     /cadastro CadastroR GET
+    /login LoginR GET
     /contato ContatoR GET
 |]
 
 
 widgetHtmlHome :: Widget
 widgetHtmlHome = [whamlet|
-<div class="fixed-top">  
-     <!-- header -->
-     ^{menu}
-     <!-- /.header -->
-     <div class="container">
-          <!-- wrapper-->
-          <div id="wrapper" class="no-padding">
-               <div class="padding-left-15 padding-right-15 padding-bottom-15 no-padding-xs no-padding-sm">
-                    <div id="carousel-example-captions" class="carousel slide main-carousel" data-ride="carousel">
-                         <ol class="carousel-indicators clearfix">
-                             <li data-target="#carousel-example-captions" data-slide-to="0" class="active"><h3>Uncharted 4 Gameplay Review
-                             <li data-target="#carousel-example-captions" data-slide-to="1"><h3>Last of Us Remastered Gameplay
-                             <li data-target="#carousel-example-captions" data-slide-to="2"><h3>Marvel Galaxy Contest Review
-                             <li data-target="#carousel-example-captions" data-slide-to="3"><h3>Injustice Gods Among Us Gameplay
-                         <div class="carousel-inner" role="listbox">
-                              <div class="item active">
-                                   <img src="img/slideshow/1.jpg" class="full-width" alt="First slide image"> 
-                                   <div class="carousel-caption">
-                                        <h1><span>Global news
-                                        <h2><span>Uncharted 4 Review
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas egestas, orci id...
-                              <div class="item">
-                                   <img src="img/slideshow/2.jpg" class="full-width" alt="Second slide image">
-                                   <div class="carousel-caption">
-                                        <h1><span>PS4
-                                        <h2><span>Last of Us Remastered
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas egestas, orci id...
-                              <div class="item">
-                                   <img src="img/slideshow/3.jpg" class="full-width" alt="Third slide image">
-                                   <div class="carousel-caption">
-                                        <h1><span>Xbox One
-                                        <h2><span>Marvel Galaxy Review
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas egestas, orci id...
-                              <div class="item">
-                                   <img src="img/slideshow/4.jpg" class="full-width" alt="Third slide image">
-                                   <div class="carousel-caption">
-                                        <h1><span>PC
-                                        <h2><span>Injustice Gods Among Us
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas egestas, orci id...
-                              <a class="left carousel-control" href="#carousel-example-captions" role="button" data-slide="prev">
-                                   <span class="glyphicon glyphicon-chevron-left" aria-hidden="true">
-                                   <span class="sr-only">Previous
-                              <a class="right carousel-control" href="#carousel-example-captions" role="button" data-slide="next">
-                                   <span class="glyphicon glyphicon-chevron-right" aria-hidden="true">
-                                   <span class="sr-only">Next
-                    <!-- /.slideshow -->
-               <!-- section -->
-               <section class="bg-grey-100 border-top-1 border-bottom-1 border-grey-200 margin-bottom-10 margin-top-5 relative no-padding hidden-xs">
-                        <div class="section-title no-margin-top no-border padding-top-25 padding-left-25 padding-right-25"> 
-                             <h3 class="display-inline-block pull-left bg-grey-900 color-white no-border">Últimos jogos
-                                 <ul class="list-inline pull-left title-categories hidden-sm-lg">
-                                     <li><a href="#" class="active">Todos
-                                     <li><a href="#">PC
-                                     <li><a href="#">PS3
-                                     <li><a href="#">PS4
-                                     <li><a href="#">Xbox 360
-                                     <li><a href="#">Xbox One
-                                     <li><a href="#">WII U
-                                     <li><a href="#">PS VITA
-                                     <li><a href="#">Mobile
-                                 <div class="pull-right">
-                                      <div class="btn-group">
-                                           <a href="#" class="btn btn-default prev"><i class="fa fa-chevron-left"></i>
-                                           <a href="#" class="btn btn-default next"><i class="fa fa-chevron-right"></i>
-                        <div class="item-carousel padding-left-10 padding-right-10 margin-bottom-25">
-                             <div class="owl-carousel">
-                                  <div class="thumbnail">
-                                       <h4 class="padding-10-20">
-                                           <a href="#">GRAND THEFT AUTO 5
-                                       <a href="#">
-                                          <img src="img/game/1.jpg" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-10-20">
-                                            <p class="font-size-14">Release date: 
-                                               <span class="bold">03. 24. 2015
-                                            <span class="rating">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                  <div class="thumbnail">
-                                       <h4 class="padding-10-20">
-                                           <a href="#">Batman: Arkham Knight
-                                       <a href="#">
-                                          <img src="img/game/2.jpg" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-10-20">
-                                            <p class="font-size-14">Release date: 
-                                               <span class="bold">03. 24. 2015
-                                            <span class="rating">
-                                                  <span class="star">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                  <div class="thumbnail">
-                                       <h4 class="padding-10-20">
-                                           <a href="#">Tomb Raider
-                                       <a href="#">
-                                          <img src="img/game/3.jpg" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-10-20">
-                                            <p class="font-size-14">Release date: 
-                                               <span class="bold">03. 24. 2015
-                                            <span class="rating">
-                                                  <span class="star">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                  <div class="thumbnail">
-                                       <h4 class="padding-10-20">
-                                           <a href="#">Injustice Gods Among Us
-                                       <a href="#">
-                                          <img src="img/game/4.jpg" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-10-20">
-                                            <p class="font-size-14">Release date: 
-                                               <span class="bold">03. 24. 2015
-                                            <span class="rating">
-                                                  <span class="star">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                  <div class="thumbnail">
-                                       <h4 class="padding-10-20">
-                                           <a href="#">Metal Gear Solid V
-                                       <a href="#">
-                                          <img src="img/game/5.jpg" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-10-20">
-                                            <p class="font-size-14">Release date: 
-                                               <span class="bold">03. 24. 2015
-                                            <span class="rating">
-                                                  <span class="star">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated">
-                                                  <span class="star rated"> 
-               <!-- section -->
-          <!-- /.wrapper -->
-     <!-- footer -->
-     ^{footer}
-     <!-- /.footer -->
-     <!-- sign-in modal -->
+<h1>Em construção
 |]
 
-widgetHtmlContato :: Widget
-widgetHtmlContato = [whamlet|
-<div class="fixed-top"> 
+widgetHtmlLogin:: Widget
+widgetHtmlLogin= [whamlet|
      <!-- header -->
      ^{menu}
      <!-- /.header -->
@@ -178,27 +37,26 @@ widgetHtmlContato = [whamlet|
           <div id="wrapper" class="margin-top-15 margin-bottom-30">
                <div class="col-md-12">
                     <section class="no-border no-padding">
-                             <h4 class="page-header no-margin-top">Contato
+                             <h4 class="page-header no-margin-top">Login
                              <form autocomplete="off" method="POST">
                                    <div class="col-md-12 col-xs-12 no-padding">
                                         <div class="row">
-                                             <div class="control-group col-md-6 ">
-                                                  <div class="controls">
-                                                       <input type="text" class="form-control input-lg" id="Name" placeholder="Nome" required>
                                              <div class="control-group col-md-6">
                                                   <div class="controls">
                                                        <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
-                                             <div class="control-group col-md-12 no-padding col-xs-12 margin-top-15">
+                                             <div class="control-group col-md-6">
                                                   <div class="controls">
-                                                        <textarea class="form-control input-lg" rows="4" placeholder="Messagem">
+                                                        <input type="text" class="form-control input-lg" id="senha" placeholder="Senha" required>
+                                  <button type="button" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25">Entrar</button>                  
           <!-- /.wrapper -->
-          ^{footer}
-
+          <!-- footer -->
+     ^{footer}
+          <!-- /.footer -->
 |]
 
 widgetHtmlCadastro :: Widget
 widgetHtmlCadastro = [whamlet|
-<div class="fixed-top"> 
+
      <!-- header -->
      ^{menu}
      <!-- /.header -->
@@ -217,13 +75,47 @@ widgetHtmlCadastro = [whamlet|
                                              <div class="control-group col-md-6">
                                                   <div class="controls">
                                                        <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
-                                             <div class="control-group col-md-12 no-padding margin-top-15">
+                                             <div class="control-group col-md-6 margin-top-15">
                                                   <div class="controls">
                                                         <input type="text" class="form-control input-lg" id="senha" placeholder="Senha" required>
+                                             <div class="control-group col-md-6 margin-top-15">
+                                                  <div class="controls">
+                                                        <input type="text" class="form-control input-lg" id="confsenha" placeholder="Confirmação de senha" required>                  
+                                   <button type="button" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25">Enviar</button>
           <!-- /.wrapper -->
           <!-- footer -->
-          ^{footer}
+     ^{footer}
           <!-- /.footer -->
+|]
+
+widgetHtmlContato :: Widget
+widgetHtmlContato = [whamlet|
+
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+     <div class="container">
+          <!-- wrapper-->
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <h4 class="page-header no-margin-top">Contato
+                             <form autocomplete="off" method="POST">
+                                   <div class="col-md-12 col-xs-12 no-padding">
+                                        <div class="row">
+                                             <div class="control-group col-md-6 ">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="Name" placeholder="Nome" required>
+                                             <div class="control-group col-md-6">
+                                                  <div class="controls">
+                                                       <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
+                                             <div class="control-group col-md-12 col-xs-12 margin-top-15">
+                                                  <div class="controls">
+                                                        <textarea class="form-control input-lg" rows="4" placeholder="Messagem">
+                                   <button type="button" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25">Enviar</button>                     
+          <!-- /.wrapper -->
+     ^{footer}
+
 |]
 
 widgetCss :: Widget
@@ -231,7 +123,7 @@ widgetCss = do
     addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
     addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.css"
-    addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.0/css/ionicons.min.css"
+    addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css"
     toWidget [lucius|
     /* style.css */
@@ -252,7 +144,7 @@ widgetJS = do
     addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"
     addScriptRemote "https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
     toWidgetHead [julius|
-    !function(e){"use strict";e(".main-carousel").on("slide.bs.carousel",function(){e(".carousel-caption h1 span").removeClass("animated fadeInLeft"),e(".carousel-caption h2 span").removeClass("animated fadeInRight"),e(".carousel-caption p").removeClass("animated fadeInLeft")}),e(".main-carousel").on("slid.bs.carousel",function(){e(this).find(".item.active .carousel-caption h1 span").addClass("animated fadeInLeft"),e(this).find(".item.active .carousel-caption h2 span").addClass("animated fadeInRight"),e(this).find(".item.active .carousel-caption p").addClass("animated fadeInLeft")}),e(".masonry").imagesLoaded(function(){e(".masonry").masonry({itemSelector:".elem",gutter:27})}),e(".loaded-content section").slice(0,4).show(),e("#load-more").click(function(t){t.preventDefault();var i=e(this);i.button("loading"),setTimeout(function(){i.button("reset"),e(".loaded-content section:hidden").slice(0,4).fadeIn()},500)});var t=e(".owl-carousel");t.owlCarousel({items:4,itemsDesktop:[1e3,3],itemsTablet:[600,1],itemsMobile:!1}),e(".next").click(function(){return t.trigger("owl.next"),!1}),e(".prev").click(function(){return t.trigger("owl.prev"),!1}),e(".play").click(function(){return t.trigger("owl.play",1e3),!1}),e(".stop").click(function(){return t.trigger("owl.stop"),!1});var i=e(".owl-video-carousel");i.owlCarousel({items:4,itemsDesktop:[1e3,3],itemsTablet:[600,1],itemsMobile:!1}),e(".video-next").click(function(){return i.trigger("owl.next"),!1}),e(".video-prev").click(function(){return i.trigger("owl.prev"),!1}),e(".owl-widget-carousel").owlCarousel({autoPlay:!0,singleItem:!0})}(jQuery);
+    
 |]
 
 
@@ -263,7 +155,7 @@ menu = toWidget [whamlet|
                   <div class="header">
                        <div class="container">
                             <span class="bar hide">
-                            <a href="@{HomeR}" class="logo pull-left"><i class="ion-flash"></i> YOUPLAY 
+                            <a href="@{HomeR}" class="logo pull-left"><i class="ion-ios-game-controller-b"></i> YOUPLAY 
                             <div class="advertisement advertisement-sm pull-left">
                                  <a href="@{HomeR}">
                                     <img src="img/468.png" alt="" />
@@ -271,25 +163,10 @@ menu = toWidget [whamlet|
                   <nav>
                        <div class="container">
                             <ul>
-                                <li><a href="index.html">Home
-                                <li class="dropdown mega-dropdown">
-                                    <a href="games.html">Jogos <i class="ion-arrow-down-b"></i>
-                                    <!-- mega menu -->
-                                    <ul class="dropdown-menu mega-dropdown-menu row">     
-                                        <li class="col-sm-3">
-                                            <ul>
-                                                <li class="dropdown-header">Categorias
-                                                <li><a href="#"><i class="ion-ios-monitor-outline font-size-14"></i>Todas as plataformas
-                                                <li><a href="#"><i class="ion-playstation font-size-14"></i> Playstation 4
-                                                <li><a href="#"><i class="ion-xbox font-size-14"></i> Xbox One
-                                                <li><a href="#"><i class="ion-mouse font-size-14"></i> Computador
-                                        <li><a href="@{CadastroR}">Cadastro
-                                        <li><a href="#signin" data-toggle="modal" class="btn"><i class="ion-log-in"></i> Login
-                                        <li><a href="@{ContatoR}">Contato
-                                    <!-- search -->
-                                    <div id="search" class="pull-right hidden-sm">
-                                         <form method="post" class="form-inline">
-                                               <input type="text" class="form-control" placeholder="Buscar" />
+                                <li><a href="@{HomeR}">Home
+                                <li><a href="@{CadastroR}">Cadastro
+                                <li><a href="@{LoginR}">Login
+                                <li><a href="@{ContatoR}">Contato
                   <!-- /.navigation -->
              <!-- /.header-color -->
 |]
@@ -298,13 +175,17 @@ footer :: Widget
 footer = toWidget [whamlet|
           <!-- footer -->
           <footer>
-             <!-- footer bottom -->
-             <div class="footer-bottom">
                   <div class="container">
-                       <ul class="pull-left">
-                           <li>&copy; 2015 YOUPLAY. Todos os direitos reservados.
-             <!-- /.footer bottom -->
+                       <div class="widget row">
+                       <!-- /.footer widget -->
+                  <!-- footer bottom -->
+                  <div class="footer-bottom">
+                       <div class="container">
+                            <ul class="pull-center">
+                                <li>&copy; 2015 YOUPLAY. Todos os direitos reservados.
+                  <!-- /.footer bottom -->
           <!-- /.footer -->
+                                    
 |]
 
 getHomeR :: Handler Html
@@ -312,6 +193,9 @@ getHomeR = defaultLayout (widgetHtmlHome >> widgetCss >> widgetJS)
 
 getCadastroR :: Handler Html
 getCadastroR = defaultLayout (widgetHtmlCadastro >> widgetCss >> widgetJS)
+
+getLoginR :: Handler Html
+getLoginR = defaultLayout (widgetHtmlLogin >> widgetCss >> widgetJS)
 
 getContatoR :: Handler Html
 getContatoR = defaultLayout (widgetHtmlContato >> widgetCss >> widgetJS)
