@@ -20,7 +20,6 @@ data Sitio = Sitio {connPool :: ConnectionPool}
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Usuario
-    nome Text
     email Text
     senha Text 
     deriving Show
@@ -29,17 +28,20 @@ Jogo
     nome Text
     plataforma Text
     categoria Text
+    descricao Text
     deriving Show
 |]
 
 mkYesod "Sitio" [parseRoutes|
     / HomeR GET
     /cadastro CadastroR GET POST
-    /login LoginR GET
+    /login LoginR GET POST
     /contato ContatoR GET
     /listar ListarR GET
     /cadastrojogo CadastrojogoR GET POST
     /jogo/#JogoId JogoR GET
+    /jogos JogosR GET
+    /logout LogoutR GET
 
 |]
 
@@ -59,17 +61,12 @@ instance RenderMessage Sitio FormMessage where
 
 formUsuario :: Form Usuario
 formUsuario = renderBootstrap2 $ Usuario <$>
-             areq textField FieldSettings{fsId=Just "hident2",
-                            fsLabel= "",
-                            fsTooltip= Nothing,
-                            fsName= Nothing,
-                            fsAttrs=[("class","form-control input-lg"),("placeholder","Nome")]} Nothing <*>
-             areq emailField FieldSettings{fsId=Just "hident3",
+             areq emailField FieldSettings{fsId=Just "hident2",
                             fsLabel= "",
                             fsTooltip= Nothing,
                             fsName= Nothing,
                             fsAttrs=[("class","form-control input-lg"),("placeholder","E-mail")]} Nothing <*>
-             areq passwordField FieldSettings{fsId=Just "hident4",
+             areq passwordField FieldSettings{fsId=Just "hident3",
                             fsLabel= "",
                             fsTooltip= Nothing,
                             fsName= Nothing,
@@ -91,12 +88,17 @@ formJogo = renderBootstrap2 $ Jogo <$>
                             fsLabel= "",
                             fsTooltip= Nothing,
                             fsName= Nothing,
-                            fsAttrs=[("class","form-control input-lg"),("placeholder","Categoria")]} Nothing 
+                            fsAttrs=[("class","form-control input-lg"),("placeholder","Categoria")]} Nothing <*>
+             areq textField FieldSettings{fsId=Just "hident5",
+                            fsLabel= "",
+                            fsTooltip= Nothing,
+                            fsName= Nothing,
+                            fsAttrs=[("class","form-control input-lg"),("placeholder","Descrição")]} Nothing
 
-widgetForm :: Enctype -> Widget -> Widget
-widgetForm enctype widget = [whamlet|
-   
-    <!-- header -->
+
+widgetForm :: Route Sitio -> Enctype -> Widget -> Text -> Text -> Widget
+widgetForm x enctype widget y val = [whamlet|
+     <!-- header -->
      ^{menu}
      <!-- /.header -->
      <div class="container">
@@ -104,49 +106,19 @@ widgetForm enctype widget = [whamlet|
           <div id="wrapper" class="margin-top-15 margin-bottom-30">
                <div class="col-md-12">
                     <section class="no-border no-padding">
-                             <h4 class="page-header no-margin-top">Cadastro
-                             <form method=post action=@{CadastroR} enctype=#{enctype}>
+                             <h4 class="page-header no-margin-top">#{y}
+                             <form method=post action=@{x} enctype=#{enctype}>
                                    <div class="col-md-12 col-xs-12 no-padding">
                                         <div class="row">
                                              <div class="control-group col-md-6 ">
                                                   <div class="controls">
                                                        ^{widget}
-                                   <input type="submit" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25" value="Cadastrar">
-          <!-- /.wrapper -->
-     <!-- footer -->
-     ^{footer}
-     <!-- /.footer -->
-|]
-
-
-widgetFormJ :: Enctype -> Widget -> Widget
-widgetFormJ enctype widget = [whamlet|
-   
-    <!-- header -->
-     ^{menu}
-     <!-- /.header -->
-     <div class="container">
-          <!-- wrapper-->
-          <div id="wrapper" class="margin-top-15 margin-bottom-30">
-               <div class="col-md-12">
-                    <section class="no-border no-padding">
-                             <h4 class="page-header no-margin-top">Cadastro de jogos
-                             <form method=post action=@{CadastrojogoR} enctype=#{enctype}>
-                                   <div class="col-md-12 col-xs-12 no-padding">
-                                        <div class="row">
-                                             <div class="control-group col-md-6 ">
-                                                  <div class="controls">
-                                                       ^{widget}
-                                   <input type="submit" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25" value="Cadastrar">
-          <!-- /.wrapper -->
-     <!-- footer -->
-     ^{footer}
-     <!-- /.footer -->
+                                   <input type="submit" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25" value=#{val}>
 |]
 
 
 urlAssets :: String -> String 
-urlAssets x = "https://preview.c9users.io/maydrigo/mayara/assets/" ++ x
+urlAssets x = "https://preview.c9users.io/carolribeiro/carol/assets/" ++ x
 
 
 menu :: Widget
@@ -164,15 +136,13 @@ menu = toWidget [whamlet|
                                 <li>
                                     <a href="@{HomeR}">Home
                                 <li>
-                                    <a href="@{CadastrojogoR}">Jogos
+                                    <a href="@{JogosR}">Jogos
                                 <li>
                                     <a href="@{CadastroR}">Cadastro
                                 <li>
                                     <a href="@{LoginR}">Login
                                 <li>
                                     <a href="@{ContatoR}">Contato
-                                 
-                                   
                   <!-- /.navigation -->
              <!-- /.header-color -->
 |]
@@ -190,7 +160,7 @@ footer = toWidget [whamlet|
                                          <a href="@{HomeR}">
                                             <i class="fa fa-chevron-right"></i>Home
                                      <li>
-                                         <a href="@{CadastrojogoR}">
+                                         <a href="@{JogosR}">
                                             <i class="fa fa-chevron-right"></i>Jogos
                                      <li>
                                          <a href="@{CadastroR}">
@@ -226,7 +196,7 @@ footer = toWidget [whamlet|
 |]
 
 
-widgetCss :: Widget
+widgetCss :: Widget {-trocar nome-}
 widgetCss = do
     addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
     addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
@@ -247,95 +217,14 @@ widgetCss = do
         <script src="#{urlAssets "js/masonry.pkgd.min.js"}">
         <script src="#{urlAssets "js/imagesloaded.pkgd.min.js"}">
         <script src="#{urlAssets "js/owl.carousel.min.js"}">
-              
+        <script src="#{urlAssets "js/script.js"}">      
     |]
 
-widgetJS :: Widget
+widgetJS :: Widget {-tirar-}
 widgetJS = do
   
     toWidgetHead [julius|
-    (function($) {
-		"use strict";
-		
-			/*	Carousel
-			/*----------------------------------------------------*/
-			$(".main-carousel").on("slide.bs.carousel", function() {
-				$(".carousel-caption h1 span").removeClass('animated fadeInLeft');
-				$(".carousel-caption h2 span").removeClass('animated fadeInRight');
-				$(".carousel-caption p").removeClass('animated fadeInLeft');
-			});
-			$(".main-carousel").on("slid.bs.carousel", function() {
-				$(this).find(".item.active .carousel-caption h1 span").addClass('animated fadeInLeft');
-				$(this).find(".item.active .carousel-caption h2 span").addClass('animated fadeInRight');
-				$(this).find(".item.active .carousel-caption p").addClass('animated fadeInLeft');
-			});
-			
-			/*	Masonry
-			/*----------------------------------------------------*/
-			$('.masonry').imagesLoaded( function(){
-				$('.masonry').masonry({itemSelector: '.elem', gutter: 27 }); 
-			});
-			
-			/* Load Content
-			/*----------------------------------------------------*/	
-			$(".loaded-content section").slice(0, 4).show();
-			$('#load-more').click(function (e) {
-				e.preventDefault();
-				var btn = $(this)
-				btn.button('loading')
-				setTimeout(function () {
-					btn.button('reset')
-					$(".loaded-content section:hidden").slice(0, 4).fadeIn();
-				}, 500)
-			});
-			
-			/*	Owl carousel
-			/*----------------------------------------------------*/
-			var owl = $(".owl-carousel");
-			 
-			owl.owlCarousel({
-			items : 4, //4 items above 1000px browser width
-			itemsDesktop : [1000,3], //3 items between 1000px and 0
-			itemsTablet: [600,1], //1 items between 600 and 0
-			itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
-			});
-			 
-			// Custom Navigation Events
-			$(".next").click(function(){
-			owl.trigger('owl.next');
-			return false;
-			})
-			$(".prev").click(function(){
-			owl.trigger('owl.prev');
-			return false;
-			})
-			$(".play").click(function(){
-			owl.trigger('owl.play',1000); //owl.play event accept autoPlay speed as second parameter
-			return false;
-			})
-			$(".stop").click(function(){
-			owl.trigger('owl.stop');
-			return false;
-			})
-			
-			/*	Owl carousel
-			/*----------------------------------------------------*/
-			var owlv = $(".owl-video-carousel");
-			 
-			owlv.owlCarousel({
-			items : 4, //4 items above 1000px browser width
-			itemsDesktop : [1000,3], //3 items between 1000px and 0
-			itemsTablet: [600,1], //2 items between 600 and 0
-			itemsMobile : false // itemsMobile disabled - inherit from itemsTablet option
-			});
-			
-			 /*	Owl carousel
-			/*----------------------------------------------------*/
-			$(".owl-widget-carousel").owlCarousel({
-				autoPlay: true,
-				singleItem:true
-			});
-		})(jQuery);
+    
     |]
 
 
@@ -408,51 +297,59 @@ widgetHtmlHome = [whamlet|
                                   <div class="thumbnail" style="float:left; margin-right:25px; margin-left:5px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Grand Theft Auto 5
-                                       <a href="#"> 
-                                          <img src="#{urlAssets "img/game/1.jpg"}" alt="Generic placeholder thumbnail">
+                                       <a href="@{JogosR}">
+                                          <img src="#{urlAssets "img/game/1.jpg"}" alt="GTA 5">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Batman Arkham Knight
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/2.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/2.jpg"}" alt="Batman Arkham Knight">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Tomb Raider
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/3.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/3.jpg"}" alt="Tomb Raider">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Injustice Gods Among Us
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/4.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/4.jpg"}" alt="Injustice Gods Among Us">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:25px; margin-left:5px; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Metal Gear Solid V
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/5.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/5.jpg"}" alt="Metal Gear Solid V">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:25px; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">Assassin's Creed Unity
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/6.jpg"}" alt="Generic placeholder thumbnail">
-                                       <div class="caption padding-15-20"> 
+                                          <img src="#{urlAssets "img/game/6.jpg"}" alt="Assassin's Creed Unity">
+                                       <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:25px;margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">The Witcher 3
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/7.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/7.jpg"}" alt="The Witcher 3">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:25px;">
                                        <h4 class="padding-10-20" style="font-size:18px;text-align:center">
                                            <a href="#">God of War 3
                                        <a href="#">
-                                          <img src="#{urlAssets "img/game/8.jpg"}" alt="Generic placeholder thumbnail">
+                                          <img src="#{urlAssets "img/game/8.jpg"}" alt="God of War 3">
                                        <div class="caption padding-15-20">
+                                            <a href="@{JogosR}" class="btn btn-block btn-primary">Ver
                <!-- section -->
           <!-- /.wrapper -->
      <!-- footer -->
@@ -462,40 +359,10 @@ widgetHtmlHome = [whamlet|
 |]
 
 
-widgetHtmlLogin:: Widget
-widgetHtmlLogin= [whamlet|
-     <!-- header -->
-     ^{menu}
-     <!-- /.header -->
-     <div class="container">
-          <!-- wrapper-->
-          <div id="wrapper" class="margin-top-15 margin-bottom-30">
-               <div class="col-md-12">
-                    <section class="no-border no-padding">
-                             <h4 class="page-header no-margin-top">Login
-                             <form autocomplete="off" method="POST">
-                                   <div class="col-md-12 col-xs-12 no-padding">
-                                        <div class="row">
-                                             <div class="control-group col-md-6">
-                                                  <div class="controls">
-                                                       <input type="text" class="form-control input-lg" id="email" placeholder="Email" required>
-                                             <div class="control-group col-md-6">
-                                                  <div class="controls">
-                                                        <input type="password" class="form-control input-lg" id="senha" placeholder="Senha" required>
-                                  <button type="button" class="btn btn-success pull-left margin-top-15 padding-top-15 padding-bottom-15 padding-left-25 padding-right-25">Entrar
-          <!-- /.wrapper -->
-     <!-- footer -->
-     ^{footer}
-     <!-- /.footer -->
-|]
-
-
-
-widgetHtmlJogos:: Widget
+widgetHtmlJogos:: Widget    {-para maa fazer :P -}
 widgetHtmlJogos = [whamlet|
 <h1>Em construção
 |]
-
 
 
 
@@ -536,45 +403,12 @@ getHomeR = defaultLayout (widgetHtmlHome >> widgetCss >> widgetJS)
 getCadastrojogoR :: Handler Html
 getCadastrojogoR = do
     (widget, enctype) <- generateFormPost formJogo
-    defaultLayout $ widgetFormJ enctype widget >> widgetCss
+    defaultLayout $ widgetForm CadastrojogoR enctype widget "Cadastro de jogos" "Cadastrar" >> widgetCss
 
 getCadastroR :: Handler Html
 getCadastroR = do
     (widget, enctype) <- generateFormPost formUsuario
-    defaultLayout $ widgetForm enctype widget >> widgetCss
-   
-
-getLoginR :: Handler Html
-getLoginR = defaultLayout (widgetHtmlLogin >> widgetCss >> widgetJS)
-
-getContatoR :: Handler Html
-getContatoR = defaultLayout (widgetHtmlContato >> widgetCss >> widgetJS)
-
-getJogoR :: JogoId -> Handler Html
-getJogoR pid = do
-    jogo <- runDB $ get404 pid
-    defaultLayout[whamlet|
-     <!-- header -->
-     ^{menu}
-     <!-- /.header -->
-        <p> Nome: #{jogoNome jogo}    
-        <p> Plataforma: #{jogoPlataforma jogo}
-        <p> Categoria: #{jogoCategoria jogo}   
-     ^{footer}      
-    |]  
-
-getListarR :: Handler Html
-getListarR = do
-    listaP <- runDB $ selectList [] [Asc JogoNome]
-    defaultLayout [whamlet|
-     <!-- header -->
-     ^{menu}
-     <!-- /.header -->
-        <h1>Jogos cadastrados:
-        $forall Entity pid jogo <- listaP  
-            <a href=@{JogoR pid}> #{jogoNome jogo}    
-     ^{footer}
-|]
+    defaultLayout $ widgetForm CadastroR enctype widget "Cadastro de usuários" "Cadastrar" >> widgetCss
 
 postCadastroR :: Handler Html
 postCadastroR = do
@@ -582,14 +416,9 @@ postCadastroR = do
                 case result of
                     FormSuccess usuario -> do
                         runDB $ insert usuario
-                        defaultLayout [whamlet|
-                            <!-- header -->
-                            ^{menu}
-                            <!-- /.header -->
-                                <h1>#{usuarioNome usuario} Inserido com sucesso
-                            ^{footer}        
-                        |] 
-                    _ -> redirect CadastroR 
+                        setMessage $ [shamlet| <p> Usuário cadastrado com sucesso! |] {- por css -}
+                        redirect CadastroR
+                    _ -> redirect CadastroR
 
 postCadastrojogoR :: Handler Html
 postCadastrojogoR = do
@@ -597,10 +426,69 @@ postCadastrojogoR = do
                 case result of
                     FormSuccess jogo -> do
                         runDB $ insert jogo
-                        defaultLayout [whamlet|
-                            <h1>#{jogoNome jogo} Inserido com sucesso
-                        |]
+                        setMessage $ [shamlet| <p> Jogo cadastrado com sucesso! |] {- por css -}
+                        redirect CadastrojogoR
                     _ -> redirect CadastrojogoR
+                    
+getLoginR :: Handler Html
+getLoginR = do
+    (widget, enctype) <- generateFormPost formUsuario
+    defaultLayout $ widgetForm LoginR enctype widget "Login" "Entrar" >> widgetCss
+
+postLoginR :: Handler Html
+postLoginR = do
+    ((result,_),_) <- runFormPost formUsuario
+    case result of
+        FormSuccess usr -> do
+            usuario <- runDB $ selectFirst [UsuarioEmail ==. usuarioEmail usr, UsuarioSenha ==. usuarioSenha usr ] []
+            case usuario of
+                Just (Entity uid usr) -> do
+                    setSession "_ID" (usuarioEmail usr)
+                    redirect CadastrojogoR
+                Nothing -> do
+                    setMessage $ [shamlet| Invalid user |] {- por css -}
+                    redirect LoginR 
+        _ -> redirect LoginR
+
+getLogoutR :: Handler Html
+getLogoutR = do
+    deleteSession "_ID"
+    redirect HomeR
+
+getJogosR :: Handler Html
+getJogosR = defaultLayout (widgetHtmlJogos >> widgetCss >> widgetJS) 
+
+getContatoR :: Handler Html
+getContatoR = defaultLayout (widgetHtmlContato >> widgetCss)
+
+getJogoR :: JogoId -> Handler Html
+getJogoR pid = do
+    jogo <- runDB $ get404 pid
+    defaultLayout $ widgetCss >> [whamlet|
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+        <p> Nome: #{jogoNome jogo}
+        <p> Plataforma: #{jogoPlataforma jogo}
+        <p> Categoria: #{jogoCategoria jogo}
+        <p> Descrição: #{jogoDescricao jogo}
+     ^{footer}
+    |] 
+
+getListarR :: Handler Html
+getListarR = do
+    listaP <- runDB $ selectList [] [Asc JogoNome] 
+    defaultLayout $ widgetCss >> [whamlet| 
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+        <h1>Jogos cadastrados:
+        $forall Entity pid jogo <- listaP
+            <a href=@{JogoR pid}> #{jogoNome jogo}<br>
+     ^{footer}
+|] 
+
+
 
 main::IO()
 main = do 
