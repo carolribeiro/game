@@ -1,0 +1,74 @@
+#customize{background:#fff;width:280px;height:100%;position:fixed;top:0px;z-index:1002;right:-381px;-webkit-transition:0.25s;transition:0.25s;padding:15px;box-shadow:-3px 0px 30px -2px rgba(0,0,0,0.05);}
+.toggle-customize #customize{right:0;-webkit-transition:0.25s;transition:0.25s;}
+.toggle-customize #customize .customize-open{right:-300px;-webkit-transition:0.25s;transition:0.25s;}
+#customize .panel-group{border-bottom:1px solid rgba(0,0,0, 0.04);}
+#customize .panel{border:0;padding:0;margin:0;background:#FFF;border-radius:0;-webkit-border-radius:0;box-shadow:none;-webkit-box-shadow:none;}
+#customize .panel-group .panel:last-child .panel-heading{border-bottom:0;}
+#customize .panel-heading{padding:0;border:0;border-bottom:1px solid #eee;}
+#customize .panel-collapse{font-family:"Open Sans", sans-serif;color:#444;line-height:1.em;font-size:13px;}
+#customize .customize-section{border-bottom:1px solid #eee;}
+#customize .customize-section:hover{background-color:#f5f5f5;}
+#customize .customize-section:hover h3{color:#333;}
+#customize .customize-title{color:#555;font-size:15px;font-weight:600 !important;margin:0;padding:0;border-bottom:1px solid rgba(0,0,0, 0.05);font-family:"Open Sans", sans-serif;text-transform:uppercase;}
+#customize .customize-title span{padding:0 15px 11px 0px;display:inline-block;}
+#customize .customize-title .customize-close{float:right;padding:0 4px 10px 15px;color:#555;}
+#customize .panel-title a{font-family:"Open Sans", sans-serif;font-size:14px;font-weight:600 !important;margin:0px;padding:15px;display:block;color:#555;position:relative;}
+#customize .panel-title a:focus,
+#customize .panel-title a:active,
+#customize .panel-title a:hover{background:#F5F5F5;color:#333;}
+#customize .panel-title a:hover:after,
+#customize .panel-title a:focus:after{color:#333;}
+#customize .panel-title a:after{content:"\f104";font-family:"ionIcons";position:absolute;right:15px;top:15px;font-size:13px;color:#aaa;background:transparent;}
+#customize .panel-title a.open:after{content:"\f10d";}
+#customize .panel-content{padding:15px;border-bottom:1px solid #eee;}
+#customize .customize-head a{padding:15px;color:#666;font-size:13px;font-weight:400 !important;font-family:"Open Sans", sans-serif;line-height:24px;}
+#customize .customize-head a span{display:block;font-size:20px;font-weight:300 !important;}
+#customize .customize-open{font-weight:600 !important;font-family:"Open Sans", sans-serif;position:absolute;right:380px;color:#333;border-top:1px solid #c8c8c8;border-bottom:1px solid #c8c8c8;border-left:1px solid #c8c8c8;font-size:14px;top:300px;padding:10px 13px;text-align:center;background-color:#fff;border-radius:3px 0px 0px 3px;-webkit-border-radius:3px 0px 0px 3px;-webkit-transition:0.25s;width:55px;transition:0.25s;box-shadow:0 2px 3px 0 rgba(0,0,0, 0.08);-webkit-box-shadow:0 2px 3px 0 rgba(0,0,0, 0.08);}
+#customize .customize-open:hover{background-color:#1b1b1b;color:#FFF;border-color:transparent;}
+#customize .customize-open span{display:none;float:left;margin-top:6px;}
+#customize .customize-open i{font-size:22px;}
+#customize .layouts{list-style:none;margin:0px;overflow:hidden;padding:0;}
+#customize .colors{list-style:none;margin:0;padding:10px 0 0 0;overflow:hidden;}
+#customize .colors li{float:left;margin:3px;}
+#customize .colors li a{display:block;width:22px;height:22px;cursor:pointer;border-radius:2px;}
+#customize #theme-colors .colors li a{width:20px;height:20px;border-radius:50%;}
+#customize #theme-colors .colors li{margin-right:3px;}
+.green{background:#5cb85c;}
+.blue{background:#5f9ff5;}
+.red{background:#bf1313;}
+.pink{background:#a435aa;}
+.furley{background-image:url("../img/bg/furley.jpg");}
+.agsquare{background-image:url("../img/bg/agsquare.png");}
+.crossword{background-image:url("../img/bg/crossword.png");}
+.notebook{background-image:url("../img/bg/notebook.png");}
+.brickwall{background-image:url("../img/bg/brickwall.png");}
+.gray_jean{background-image:url("../img/bg/gray_jean.png");}
+.shattered{background-image:url("../img/bg/shattered.png");}
+.tiny_grid{background-image:url("../img/bg/tiny_grid.png");}
+.retina_wood{background-image:url("../img/bg/retina_wood.png");}
+.tileable_wood_texture{background-image:url("../img/bg/tileable_wood_texture.png");}
+.dark_geometric{background-image:url("../img/bg/dark_geometric.png");}
+.dark_circles{background-image:url("../img/bg/dark_circles.png");}
+.triangles{background-image:url("../img/bg/triangles.png");}
+.mirrored_squares{background-image:url("../img/bg/mirrored_squares.png");}
+.padded{background-image:url("../img/bg/padded.png");}
+.bs-glyphicons{margin-left:0px;list-style:none;overflow:hidden;padding-bottom:1px;margin-bottom:20px;}
+.bs-glyphicons li{width:25%;float:left;height:80px;padding:15px 10px;font-size:11px;line-height:1.4;text-align:center;margin:0 -1px -1px 0;border:1px solid #ddd;}
+.bs-glyphicons .glyphicon{display:block;font-size:18px;margin:5px auto 10px;}
+.bs-glyphicons li:hover{background-color:#fafafa;}
+.fontawesome-icon-list{margin-top:22px;}
+.fontawesome-icon-list .fa-hover a{font-size:11px;display:block;color:rgba(0,0,0, 0.7);line-height:32px;height:32px;padding-left:0px;border-radius:4px;}
+.fontawesome-icon-list .fa-hover a .fa{width:32px;font-size:14px;display:inline-block;text-align:right;margin-right:10px;}
+.fontawesome-icon-list .fa-hover a:hover{background:#3498db;color:#FFF;text-decoration:none;}
+.fontawesome-icon-list .fa-hover a:hover .text-muted{color:#bbe2d5;}
+#icons{margin:0;padding:0;width:100%;list-style:none;text-align:left;font-size:1px;}
+#icons li{position:relative;z-index:0;display:inline-block;padding:22px 20px;list-style:none;text-align:center;font-weight:normal;font-size:32px;cursor:pointer;}
+#icons li:hover{color:#4F8EF7;}
+#icons li.active{color:#4F8EF7;}
+.demo-popover{position:fixed;bottom:0px;left:0px;width:300px;height:200px;}
+.demo-popover .popover{margin-left:15px;display:none !important;}
+.demo-popover .popover.top > .arrow{left:30px;}
+@media only screen and (max-width:1023px){#customize,
+.demo-popover{display:none;}
+}
+.onepage #customize .customize-open{top:90px;border:0;border-radius:3px 0 0 3px;-webkit-border-radius:3px 0 0 3px;height:50px;line-height:50px;padding:0 10px;}

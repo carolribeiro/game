@@ -13,4 +13,5 @@ pRoutes = [parseRoutes|
    /cadastrojogo CadastrojogoR GET POST
    /jogo/#JogoId JogoR GET
    /admin AdminR GET
+   /static StaticR Static getStatic
 |]
