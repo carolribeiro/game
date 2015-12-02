@@ -7,6 +7,7 @@ import Import
 import Yesod
 import Yesod.Static
 import Data.Text
+import Data.Time
 import Database.Persist.Postgresql
     ( ConnectionPool, SqlBackend, runSqlPool, runMigration )
 
@@ -19,6 +20,7 @@ staticFiles "."
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Usuario
     email Text
+    UniqueUsuario email
     senha Text
     deriving Show
 
@@ -28,7 +30,14 @@ Jogo
     categoria Text
     descricao Textarea
     deriving Show
+
+Noticia
+    titulo Text
+    noticia Textarea
+    postado UTCTime default=now()
+    deriving Show
 |]
+
 
 mkYesodData "Sitio" pRoutes
 
@@ -39,7 +48,7 @@ instance YesodPersist Sitio where
        let pool = connPool master
        runSqlPool f pool
 
-instance Yesod Sitio where{-
+instance Yesod Sitio where {-
     authRoute _ = Just $ LoginR
     isAuthorized LoginR _ = return Authorized
     isAuthorized AdminR _ = isAdmin
@@ -49,7 +58,7 @@ isAdmin = do
     mu <- lookupSession "_ID"
     return $ case mu of
         Nothing -> AuthenticationRequired
-        Just "admin" -> Authorized
+        Just "admin@admin" -> Authorized
         Just _ -> Unauthorized "Soh o admin acessa aqui!"
         
 
@@ -58,6 +67,7 @@ isUser = do
     return $ case mu of
         Nothing -> AuthenticationRequired
         Just _ -> Authorized
+
 -}
 type Form a = Html -> MForm Handler (FormResult a, Widget)
 

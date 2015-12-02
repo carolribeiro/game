@@ -9,9 +9,13 @@ pRoutes = [parseRoutes|
    /cadastro CadastroR GET POST
    /login LoginR GET POST
    /contato ContatoR GET
-   /listar ListarR GET
+   /listarjogo ListarJogoR GET
    /cadastrojogo CadastrojogoR GET POST
    /jogo/#JogoId JogoR GET
    /admin AdminR GET
    /static StaticR Static getStatic
+   /logout LogoutR GET
+   /noticia/#NoticiaId NoticiaR GET
+   /cadastronoticia CadastronoticiaR GET POST
+   /listarnoticia ListarNoticiaR GET
 |]

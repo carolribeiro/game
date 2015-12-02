@@ -6,6 +6,7 @@ module Handlers where
 import Control.Applicative
 import Control.Monad.Logger(runStdoutLoggingT)
 import Data.Text
+import Data.Time
 import Foundation
 import Import
 import Text.Lucius
@@ -16,8 +17,6 @@ import Yesod.Static
 import Database.Persist.Postgresql
 
 mkYesodDispatch "Sitio" pRoutes
-
-{-seleção de categoria-}
 
 formUsuario :: Form Usuario
 formUsuario = renderBootstrap2 $ Usuario <$>
@@ -54,6 +53,21 @@ formJogo = renderBootstrap2 $ Jogo <$>
                             fsTooltip= Nothing,
                             fsName= Nothing,
                             fsAttrs=[("class","form-control input-lg"),("placeholder","Descrição")]} Nothing
+
+
+formNoticia :: Form Noticia
+formNoticia = renderBootstrap2 $ Noticia <$>
+                areq textField FieldSettings{fsId=Just "hident2",
+                            fsLabel= "",
+                            fsTooltip= Nothing,
+                            fsName= Nothing,
+                            fsAttrs=[("class","form-control input-lg"),("placeholder","Título")]} Nothing <*>
+                areq textareaField FieldSettings{fsId=Just "hident3",
+                            fsLabel= "",
+                            fsTooltip= Nothing,
+                            fsName= Nothing,
+                            fsAttrs=[("class","form-control input-lg"),("placeholder","Notícia")]} Nothing <*>
+                lift (liftIO getCurrentTime)
 
 
 widgetForm :: Route Sitio -> Enctype -> Widget -> Text -> Text -> Widget
@@ -98,7 +112,9 @@ menu = toWidget [whamlet|
                                 <li>
                                     <a href="@{HomeR}">Home
                                 <li>
-                                    <a href="@{ListarR}">Jogos
+                                    <a href="@{ListarJogoR}">Jogos
+                                <li>
+                                    <a href="@{ListarNoticiaR}">Notícias
                                 <li>
                                     <a href="@{CadastroR}">Cadastro
                                 <li>
@@ -123,9 +139,13 @@ footer = toWidget [whamlet|
                                             <i class="fa fa-chevron-right">
                                             Home
                                      <li>
-                                         <a href="@{ListarR}">
+                                         <a href="@{ListarJogoR}">
                                             <i class="fa fa-chevron-right">
                                             Jogos
+                                     <li>
+                                         <a href="@{ListarNoticiaR}">
+                                            <i class="fa fa-chevron-right">
+                                            Notícias
                                      <li>
                                          <a href="@{CadastroR}">
                                             <i class="fa fa-chevron-right">
@@ -172,7 +192,6 @@ widgetJs = do
    addScript $ StaticR core_js
    addScript $ StaticR demo_js
    addScript $ StaticR script_js
-   
 
 
 widgetCss :: Widget
@@ -186,7 +205,7 @@ widgetCss = do
     addStylesheet $ StaticR helpers_css
     addStylesheet $ StaticR blue_css
     addStylesheet $ StaticR demo_css
-  
+
 
 widgetHtmlHome :: Widget
 widgetHtmlHome = [whamlet|
@@ -257,59 +276,59 @@ widgetHtmlHome = [whamlet|
                                   <div class="thumbnail" style="float:left; margin-right:24px; margin-left:5px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Grand Theft Auto 5
-                                       <a href="@{ListarR}">
+                                       <a href="@{ListarJogoR}">
                                           <img src=@{StaticR gta_jpg} alt="GTA 5">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-right:24px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Batman Arkham Knight
                                        <a href="#">
                                           <img src=@{StaticR bat_jpg} alt="Batman Arkham Knight">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-right:24px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Tomb Raider
                                        <a href="#">
                                           <img src=@{StaticR tomb_jpg} alt="Tomb Raider">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Injustice Gods Among Us
                                        <a href="#">
                                           <img src=@{StaticR inj_jpg} alt="Injustice Gods Among Us">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:24px; margin-left:5px; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Metal Gear Solid V
                                        <a href="#">
                                           <img src=@{StaticR metal_jpg} alt="Metal Gear Solid V">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:24px; margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">Assassin's Creed Unity
                                        <a href="#">
                                          <img src=@{StaticR ac_jpg} alt="Assassin's Creed Unity">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:24px;margin-right:25px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">The Witcher 3
                                        <a href="#">
                                           <img src=@{StaticR wit_jpg} alt="The Witcher 3">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                                   <div class="thumbnail" style="float:left; margin-top:24px;">
                                        <h4 class="padding-10-20" style="font-size:16px;text-align:center">
                                            <a href="#">God of War 3
                                        <a href="#">
                                           <img src=@{StaticR god_jpg} alt="God of War 3">
                                        <div class="caption padding-15-20">
-                                            <a href="@{ListarR}" class="btn btn-block btn-primary">Ver
+                                            <a href="@{ListarJogoR}" class="btn btn-block btn-primary">Ver
                <!-- section -->
           <!-- /.wrapper -->
      ^{footer}
@@ -345,6 +364,14 @@ widgetHtmlContato = [whamlet|
 |]
 
 
+widgetHtmlAdmin :: Widget
+widgetHtmlAdmin = [whamlet|
+     ^{menu}
+    
+     ^{footer}
+
+|]
+
 getHomeR :: Handler Html
 getHomeR = defaultLayout (widgetHtmlHome >> widgetJs >> widgetCss)
 
@@ -357,6 +384,11 @@ getCadastroR :: Handler Html
 getCadastroR = do
     (widget, enctype) <- generateFormPost formUsuario
     defaultLayout $ widgetForm CadastroR enctype widget "Cadastro de usuários" "Cadastrar" >> widgetCss
+
+getCadastronoticiaR :: Handler Html
+getCadastronoticiaR = do
+    (widget, enctype) <- generateFormPost formNoticia
+    defaultLayout $ widgetForm CadastronoticiaR enctype widget "Cadastro de notícias" "Cadastrar" >> widgetCss
 
 postCadastroR :: Handler Html
 postCadastroR = do
@@ -377,6 +409,16 @@ postCadastrojogoR = do
                         setMessage $ [shamlet| <p style="text-align:center;"> Jogo cadastrado com sucesso! |]
                         redirect CadastrojogoR
                     _ -> redirect CadastrojogoR
+
+postCadastronoticiaR :: Handler Html
+postCadastronoticiaR = do
+                ((result, _), _) <- runFormPost formNoticia
+                case result of
+                    FormSuccess noticia -> do
+                        runDB $ insert noticia
+                        setMessage $ [shamlet| <p style="text-align:center;"> Notícia cadastrada com sucesso! |]
+                        redirect CadastronoticiaR
+                    _ -> redirect CadastronoticiaR
 
 getLoginR :: Handler Html
 getLoginR = do
@@ -404,8 +446,8 @@ getLogoutR = do
     redirect HomeR
 
 getAdminR :: Handler Html
-getAdminR = defaultLayout [whamlet| <h1> Bem-vindo ADMIN!! |]
-
+getAdminR = defaultLayout (widgetHtmlAdmin >> widgetCss)
+     
 getContatoR :: Handler Html
 getContatoR = defaultLayout (widgetHtmlContato >> widgetCss)
 
@@ -432,8 +474,8 @@ getJogoR pid = do
      ^{footer}
     |]
 
-getListarR :: Handler Html
-getListarR = do
+getListarJogoR :: Handler Html
+getListarJogoR = do
     listaP <- runDB $ selectList [] [Asc JogoNome]
     defaultLayout $ widgetCss >> [whamlet|
      <!-- header -->
@@ -456,6 +498,54 @@ getListarR = do
                                           <img src=@{StaticR wit_jpg} alt="jogo">
                                         <div class="caption padding-15-20">
                                             <a href="@{JogoR pid}" class="btn btn-block btn-primary">Ver
+               <!-- section -->
+          <!-- /.wrapper -->
+     <!-- footer -->
+     ^{footer}
+|]
+
+getNoticiaR :: NoticiaId -> Handler Html
+getNoticiaR pid = do
+    noticia <- runDB $ get404 pid
+    defaultLayout $ widgetCss >> [whamlet|
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+         <section class="no-padding">
+                  <div class="container">
+                       <div class="row margin-top-50 margin-bottom-50">
+                            <div class="box padding-20 clearfix">
+                                 <div class="col-lg-12 padding-right-30" style="background:#fff;">
+                                      <div class="post no-margin-bottom">
+                                           <div class="post-header margin-top-10">
+                                                <div class="post-title">
+                                                     <h2 class="text-uppercase" style="font-size:24px;">#{noticiaTitulo noticia}
+                                                     <span class="label label-primary margin-top-10 font-size-10">postado por 
+                                                     <span class="label label-success margin-top-5 font-size-10">#{show $ utctDay $ noticiaPostado noticia}
+                                           <p class="margin-top-30" style="text-align:justify;">#{noticiaNoticia noticia}
+
+     ^{footer}
+    |]    
+
+getListarNoticiaR :: Handler Html
+getListarNoticiaR = do
+    listaN <- runDB $ selectList [] [Asc NoticiaTitulo]
+    defaultLayout $ widgetCss >> [whamlet|
+     <!-- header -->
+     ^{menu}
+     <!-- /.header -->
+     <div class="container">
+          <!-- wrapper-->
+          <div id="wrapper">
+               <!-- section -->
+               <section class="border-grey-200 margin-bottom-10 relative no-padding hidden-xs">
+                        <div class="section-title no-margin-top no-border padding-top-25 padding-left-25 padding-right-25">
+                             <h3 class="color-black no-border" style="margin-left:-24px">Notícias cadastradas:
+                        <div class="padding-left-10 padding-right-10 margin-bottom-25">
+                             $forall Entity pid noticia <- listaN
+                                  <div>
+                                        <h4 style="font-size:18px;">
+                                            <a href=@{NoticiaR pid}>#{noticiaTitulo noticia}
                <!-- section -->
           <!-- /.wrapper -->
      <!-- footer -->
