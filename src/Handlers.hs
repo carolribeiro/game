@@ -367,7 +367,32 @@ widgetHtmlContato = [whamlet|
 widgetHtmlAdmin :: Widget
 widgetHtmlAdmin = [whamlet|
      ^{menu}
+ <!-- /.header -->
+     <div class="container">
+          <!-- wrapper-->
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <h4 class="page-header no-margin-top">Seja Bem-vindo
+                             <form autocomplete="off" method="POST">
+                                   <div class="col-md-12 col-xs-12 no-padding">
+                                        <div class="row">
+                                         <ul>
+                                             <li>
+                                              <a href="@{CadastrojogoR}"> Cadastrar Jogo 
+                                             <li>
+                                              <a href="@{CadastronoticiaR}"> Cadastrar Noticia      
+                                   
     
+     ^{footer}
+
+|]
+
+
+widgetHtmlWelcome:: Widget
+widgetHtmlWelcome = [whamlet|
+     ^{menu}
+   
      ^{footer}
 
 |]
@@ -434,7 +459,7 @@ postLoginR = do
             case usuario of
                 Just (Entity uid usr) -> do
                     setSession "_ID" (usuarioEmail usr)
-                    redirect CadastrojogoR
+                    redirect WelcomeR
                 Nothing -> do
                     setMessage $ [shamlet| <p style="text-align:center;"> Usuário inválido |]
                     redirect LoginR
@@ -447,7 +472,17 @@ getLogoutR = do
 
 getAdminR :: Handler Html
 getAdminR = defaultLayout (widgetHtmlAdmin >> widgetCss)
-     
+
+getWelcomeR :: Handler Html
+getWelcomeR = do
+     usr <- lookupSession "_ID"
+     defaultLayout [whamlet|
+        $maybe m <- usr
+            <h1> Welcome #{m}
+     |]
+    
+
+
 getContatoR :: Handler Html
 getContatoR = defaultLayout (widgetHtmlContato >> widgetCss)
 
@@ -525,7 +560,7 @@ getNoticiaR pid = do
                                            <p class="margin-top-30" style="text-align:justify;">#{noticiaNoticia noticia}
 
      ^{footer}
-    |]    
+    |]
 
 getListarNoticiaR :: Handler Html
 getListarNoticiaR = do
