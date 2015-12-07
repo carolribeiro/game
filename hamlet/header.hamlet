@@ -1,0 +1,7 @@
+<header data-type="parallax" data-speed="4" class="cover" style="background-image: url(@{StaticR assets_img_cover_jpg});">
+        <div class="header-color">
+             <div class="header">
+                  <div class="container">
+                       <a href=@{HomeR} class="logo pull-left">
+                          <i class="ion-ios-game-controller-b">
+                          Uplay

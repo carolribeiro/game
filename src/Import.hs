@@ -3,20 +3,20 @@ module Import where
 
 import Yesod
 import Yesod.Static
- 
+
 pRoutes = [parseRoutes|
    / HomeR GET
-   /cadastro CadastroR GET POST
    /login LoginR GET POST
-   /contato ContatoR GET
-   /listarjogo ListarJogoR GET
-   /cadastrojogo CadastrojogoR GET POST
-   /jogo/#JogoId JogoR GET
-   /admin AdminR GET
-   /static StaticR Static getStatic
    /logout LogoutR GET
-   /noticia/#NoticiaId NoticiaR GET
-   /cadastronoticia CadastronoticiaR GET POST
+   /admin AdminR GET 
+   /static StaticR Static getStatic
+   /cadastrousuario CadastroUsuarioR GET POST
+   /listarusuario ListarUsuarioR GET
+  
+   /cadastrojogo CadastroJogoR GET POST
+   /listarjogo ListarJogoR GET
+   /jogo/#JogoId JogoR GET
+   /cadastronoticia CadastroNoticiaR GET POST
    /listarnoticia ListarNoticiaR GET
-   /welcome WelcomeR GET
+   /noticia/#NoticiaId NoticiaR GET
 |]

@@ -1,0 +1,18 @@
+<div class="container">
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <div class="col-md-12 margin-bottom-5 margin-top-5">
+                                <ol class="breadcrumb">
+                                    <li>
+                                        <a href=@{HomeR} style="color: #337ab7">Início
+                                    <li class="active">Página do Admin
+                           $maybe m <- usr
+                             <h3 class="text-center padding-bottom-40">Bem-vindo #{m}!
+                             <div class="container">
+                                  <div class="col-md-3 margin-bottom-30 margin-left-30">
+                                       <img src=@{StaticR assets_img_darthvader_png}>
+                                  <div class="col-md-3 margin-top-30 margin-left-40">
+                                       <img src=@{StaticR assets_img_stormtrooper1_png}>
+                                  <div class="col-md-3 margin-top-30 margin-left-40">
+                                       <img src=@{StaticR assets_img_stormtrooper2_png}>

@@ -1,0 +1,48 @@
+<div class="container">
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <div class="col-md-12">
+                    <section class="no-border no-padding">
+                             <div class="col-md-12 margin-bottom-5 margin-top-5">
+                                <ol class="breadcrumb">
+                                    <li>
+                                        <a href=@{HomeR} style="color: #337ab7">Início
+                                    <li class="active">Uplay
+                             <div class="col-md-4 col-xs-12">
+                                  <div class="row">
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{CadastroUsuarioR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-users">
+                                               Cadastrar Usuário
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{CadastroJogoR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-gamepad">
+                                               Cadastrar Jogo
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{CadastroNoticiaR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-newspaper-o">
+                                               Cadastrar Notícia
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{AdminR} class="btn btn-block btn-primary">
+                                                <i class="fa fa-user">
+                                                Página do Admin
+                             <div class="col-md-4 col-xs-12">
+                                  <div class="row">
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{ListarUsuarioR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-users">
+                                               Listar Usuário
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{ListarJogoR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-gamepad">
+                                               Listar Jogo
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{ListarNoticiaR} class="btn btn-block btn-primary">
+                                               <i class="fa fa-newspaper-o">
+                                               Listar Notícia
+                                       <div class="caption margin-bottom-25 margin-left-30">
+                                            <a href=@{LogoutR} class="btn btn-block btn-primary">
+                                                <i class="fa fa-sign-out">
+                                                Logout
+                             <div class="col-md-2 margin-left-40 padding-left-40" style="margin-top:-89px;">
+                                  <div class="row">
+                                       <img src=@{StaticR assets_img_spiderman_png}>

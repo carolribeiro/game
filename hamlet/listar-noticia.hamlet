@@ -1,0 +1,18 @@
+<div class="container">
+          <!-- wrapper-->
+          <div id="wrapper" class="margin-top-15 margin-bottom-30">
+               <section class="no-border no-padding">
+                        <div class="col-md-12 margin-bottom-5 margin-top-5">
+                                <ol class="breadcrumb">
+                                    <li>
+                                        <a href=@{HomeR} style="color: #337ab7">Início
+                                    <li class="active">Notícias cadastradas
+               <section class="border-grey-200 margin-bottom-10 relative no-padding hidden-xs">
+                        <div class="section-title no-margin-top no-border margin-bottom-30">
+                             <h3 class="color-black no-border">Notícias cadastradas
+                        <div class="margin-left-25 margin-bottom-25">
+                             $forall Entity pid noticia <- listaN
+                                  <div>
+                                        <h4 class="font-size-18 margin-left-5">
+                                            <a href=@{NoticiaR pid}>#{noticiaTitulo noticia}
+                                  <br>

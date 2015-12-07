@@ -1,0 +1,6 @@
+<div class="container text-center">
+             <p class="lead">
+                Login/Senha: admin: admin ou user: user
+             <p class="lead">
+                Não é cadastrado?
+                <a href=@{CadastroUsuarioR}> Cadastre-se!
